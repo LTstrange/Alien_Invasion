@@ -47,11 +47,13 @@ def check_events(ai_settings, screen, ship, bullets):
             check_keyup_events(event, ship)
 
 
-def update_screen(ai_settings, screen, ship, aliens, bullets, sign, stars):
+def update_screen(ai_settings, screen, ship, aliens, bullets, sign, stars, meteors):
     """update the image in the screen and change to the newer screen"""
     # flash screen every loop
     screen.fill(ai_settings.bg_color)
     stars.draw(screen)
+    create_meteors(ai_settings, screen, meteors)
+    meteors.draw(screen)
     sign.blitme()
     for bullet in bullets.sprites():
         bullet.draw_bullet()
@@ -66,7 +68,7 @@ def fire_bullet(ai_settings, screen, ship, bullets):
         bullets.add(new_bullet)
 
 
-def update_bullets(bullets):
+def update_bullets(aliens, bullets):
     """update the bullets' position and delete the fade bullets"""
     # update the bullets' position
     bullets.update()
@@ -75,6 +77,10 @@ def update_bullets(bullets):
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
+
+    # Check for collisions between bullets and aliens
+    # If so, remove the corresponding bullets and aliens
+    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
 
 
 def get_number_aliens_x(ai_settings, alien_width):
@@ -155,9 +161,21 @@ def change_fleet_direction(ai_settings, aliens):
 
 
 def create_meteors(ai_settings, screen, meteors):
-    if (random.randint(0, 1) and
-            (meteors.copy() <= ai_settings.meteors_allowed)):
+    if rand_num_meteors() and (len(meteors.copy()) <= ai_settings.meteors_allowed):
         meteor = Meteor(screen, ai_settings)
         meteor.rect.x = random.randint(0, ai_settings.screen_width - meteor.rect.width)
-        
+        meteors.add(meteor)
+
+
+def rand_num_meteors():
+    if random.randint(0, 50) == 0:
+        return True
+
+
+def update_meteors(ai_settings, meteors):
+    meteors.update()
+
+    for meteor in meteors.copy():
+        if meteor.rect.y >= ai_settings.screen_height:
+            meteors.remove(meteor)
 

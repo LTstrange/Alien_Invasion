@@ -26,15 +26,15 @@ def run_game():
     stars = Group()
     gf.create_starry_night(ai_settings, screen, stars)
     meteors = Group()
-    gf.create_meteors(ai_settings, screen, meteors)
 
     # 开始游戏的主循环
     while True:
         gf.check_events(ai_settings, screen, ship, bullets)
         ship.update()
-        gf.update_bullets(bullets)
+        gf.update_bullets(aliens, bullets)
         gf.update_aliens(ai_settings, aliens)
-        gf.update_screen(ai_settings, screen, ship, aliens, bullets, sign, stars)
+        gf.update_meteors(ai_settings, meteors)
+        gf.update_screen(ai_settings, screen, ship, aliens, bullets, sign, stars, meteors)
 
 
 run_game()

@@ -35,6 +35,6 @@ class Alien(Sprite):
                    self.ai_settings.fleet_direction)
         self.rect.x = self.x
 
-    def blitme(self):
-        self.screen.blit(self.image, self.rect)
+#    def blitme(self):
+#        self.screen.blit(self.image, self.rect)
 
