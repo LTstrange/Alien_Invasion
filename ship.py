@@ -18,7 +18,7 @@ class Ship:
 
         # store the float number in the ship's attribute center
         self.FloatCenterX = float(self.rect.centerx)
-        self.FloatCenterY = float(self.rect.centery)
+        self.FloatBottom = float(self.rect.bottom)
 
         # the flag of moving
         self.moving_right = False
@@ -33,13 +33,17 @@ class Ship:
         if self.moving_left and self.rect.left > 0:
             self.FloatCenterX -= self.ai_settings.ship_speed_factor
         if self.moving_up and self.rect.top > 0:
-            self.FloatCenterY -= self.ai_settings.ship_speed_factor
+            self.FloatBottom -= self.ai_settings.ship_speed_factor
         if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
-            self.FloatCenterY += self.ai_settings.ship_speed_factor
+            self.FloatBottom += self.ai_settings.ship_speed_factor
 
         # according the center update the rect
         self.rect.centerx = self.FloatCenterX
-        self.rect.centery = self.FloatCenterY
+        self.rect.bottom = self.FloatBottom
+
+    def center_ship(self):
+        self.FloatCenterX = self.screen_rect.centerx
+        self.FloatBottom = self.screen_rect.bottom
 
     def blitme(self):
         """bilt the ship at the position"""
